@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async="" src="A%20Program%20Synthesis%20Primer%20%C2%B7_files/tex-svg.js">
+</script>
+
+
+  <title>
+    
+      A Program Synthesis Primer · 
+    
+  </title>
+
+  <link rel="stylesheet" href="A%20Program%20Synthesis%20Primer%20%C2%B7_files/styles.css">
+  <link rel="alternate" type="application/atom+xml" title="" href="https://barghouthi.github.io/atom.xml">
+<style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-SVG-styles">
+mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][display="true"][width="full"] {
+  display: flex;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line], svg[data-table] > g > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame], svg[data-table] > g > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed, svg[data-table] > g > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted, svg[data-table] > g > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > g > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
+  stroke-width: 3;
+}
+</style><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style></head>
+
+
+  <body>
+
+    <div class="container content">
+      <header class="masthead">
+      </header>
+
+      <main>
+        <article class="post">
+
+    <a href="https://barghouthi.github.io/" style="color: black; text-decoration:none"> <b>←</b> </a>
+    <br><br>
+
+    <b>A Program Synthesis Primer</b><br>
+    
+    <a href="http://cs.wisc.edu/~aws" style="color: black; text-decoration:none">Aws Albarghouthi</a><br>
+    <a href="https://github.com/Nitr0-G" style="color: black; text-decoration:none">Перевел: Nitr0-G</a><br>
+    <time datetime="2017-04-24T00:00:00-05:00" class="post-date">Apr  24, 2017</time><br>
+  
+  <br>
+  <p>Мой коллега Somesh Jha недавно попросил меня прочитать лекцию по <em>program synthesis</em>
+ в его классе. Готовя свои заметки, я понял, что одной лекции достаточно, чтобы формально определить проблему и написать пару крутых примеров, которые будут демонстрировать процесс program synthesis.
+ Этот пост содержит заметки и код, который я использовал на занятиях. В этом посте я приведу два простых примера; Полный код можно найти на: <a href="https://github.com/barghouthi/704examples/tree/master/synthesis">GitHub</a>.</p>
+
+<hr>
+
+<h2 id="what-is-program-synthesis-anyways">Что такое program synthesis?</h2>
+
+<p>В области языков программирования и верификации традиционная задача program synthesis  включает в себя построение программы на основе высокоуровневой математической спецификации.
+Предположим, вы хотите написать программу, которая вычисляет факториал некоторого числа <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="0"><svg style="vertical-align: -0.09ex;" xmlns="http://www.w3.org/2000/svg" width="5.506ex" height="1.597ex" role="img" focusable="false" viewBox="0 -666 2433.6 706" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45B" xlink:href="#MJX-TEX-I-1D45B"></use></g><g data-mml-node="mo" transform="translate(877.8,0)"><use data-c="3E" xlink:href="#MJX-TEX-N-3E"></use></g><g data-mml-node="mn" transform="translate(1933.6,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>&gt;</mo><mn>1</mn></math></mjx-assistive-mml></mjx-container>.
+Вы начинаете с математического определения факториала,
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="1"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.986ex" height="1.645ex" role="img" focusable="false" viewBox="0 -716 878 727" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45B" xlink:href="#MJX-TEX-I-1D45B"></use></g><g data-mml-node="mo" transform="translate(600,0)"><use data-c="21" xlink:href="#MJX-TEX-N-21"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>!</mo></math></mjx-assistive-mml></mjx-container>, и постепенно расширяете его — переписываете, используя свои знания о свойствах факториала и математики, — пока не дойдете до исполняемой программы.</p>
+
+<p>Несмотря на высокие цели и богатые традиции, этот обобщающий подход, называемый <em>deductive synthesis</em>— имел ограниченный успех. Проще говоря, математические спецификации трудно написать, а преобразование спецификации в программу очень трудно автоматизировать.</p>
+
+<h2 id="combinatorial-synthesis">Combinatorial synthesis</h2>
+
+<p>В последнее время исследователи изучают формы синтеза, которые проще автоматизировать.
+Стиль синтеза, на котором я сосредоточусь здесь, был впервые применен в проекте <a href="https://people.csail.mit.edu/asolar/papers/thesis.pdf">Sketch</a>.
+Идея заключается в том, что мы начинаем с <em>эталонной реализации</em> <code class="language-plaintext highlighter-rouge">p_naive</code>.
+Думайте об этом как о наивном решении проблемы, которое, как вы уверены, работает правильно, но которое вы не будете внедрять в производство, возможно, потому, что оно довольно неэффективно.
+Ваша цель - найти программу <code class="language-plaintext highlighter-rouge">p_smart</code>
+эквивалентную <code class="language-plaintext highlighter-rouge">p_naive</code>, но более эффективную и более сложную для правильного написания кода.<sup id="fnref:fn-compiler" role="doc-noteref"><a href="#fn:fn-compiler" class="footnote" rel="footnote">1</a></sup></p>
+
+<p>Для иллюстрации давайте рассмотрим чрезвычайно простой пример.
+p_naive приведена ниже, где для простоты мы предполагаем, <code class="language-plaintext highlighter-rouge">что все целые числа являются </code> битовыми векторами с 8-битной шириной.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">int</span> <span class="n">p_naive</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>Вы, как умный (но не очень сообразительный) программист, думаете, что вы могли бы добиться большего успеха, написав программу следующего вида, но вы не уверены, что поместить в<code class="language-plaintext highlighter-rouge">??</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">int</span> <span class="n">p_smart</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="err">??</span> <span class="o">//</span> <span class="n">the</span> <span class="n">operator</span> <span class="o">&lt;&lt;</span> <span class="ow">is</span> <span class="n">shift</span> <span class="n">left</span>
+    <span class="k">return</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>В некотором смысле, <code class="language-plaintext highlighter-rouge">p_smart</code> представляет собой семейство программ — все возможные    <em>значения </em> <code class="language-plaintext highlighter-rouge">??</code>.
+Конечно, правильным завершением здесь является замена ?? на <code class="language-plaintext highlighter-rouge">1</code>.</p>
+
+<h2 id="automating-synthesis">Automating synthesis</h2>
+
+<p>Итак, как мы автоматически находим значение <code class="language-plaintext highlighter-rouge">??</code> чтобы сделать <code class="language-plaintext highlighter-rouge">p_smart</code> эквивалентным по результатам <code class="language-plaintext highlighter-rouge">p_naive</code>.
+Легко! Существуют  <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="2"><svg style="vertical-align: 0px;" xmlns="http://www.w3.org/2000/svg" width="2.119ex" height="1.887ex" role="img" focusable="false" viewBox="0 -833.9 936.6 833.9" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g><g data-mml-node="mn" transform="translate(533,363) scale(0.707)"><use data-c="38" xlink:href="#MJX-TEX-N-38"></use></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>2</mn><mn>8</mn></msup></math></mjx-assistive-mml></mjx-container> разных экземпляров <code class="language-plaintext highlighter-rouge">??</code>, потом мы будем подбирать разные значения до тех пор пока не сможем найти нужный.
+В общем, это приводит к комбинаторному "взрыву"(к очень большому кол-ву значений для перебора). Мы не можем избежать комбинаторной проблемы, но оказывается, что мы можем точно охарактеризовать пространство поиска наших экземпляров как формулу, которую мы можем дать эффективному готовому SMT solver'у - как мы увидим немного позже.</p>
+
+<p>Во-первых, давайте попробуем постепенно формализовать проблему. Мы будем использовать переменную <code class="language-plaintext highlighter-rouge">h</code> для обозначения нашей неизвестности <code class="language-plaintext highlighter-rouge">??</code>.</p>
+
+<h3 id="definition-1">ОДЗ 1</h3>
+<p>Найдем значение* для <code class="language-plaintext highlighter-rouge">h</code> такое, чтобы <em>чтобы </em>для всех <code class="language-plaintext highlighter-rouge">x</code>,
+<code class="language-plaintext highlighter-rouge">p_naive(x) == p_smart(x)</code>. Другими словами: мы найдем для h все значения, с которыми результаты двух p_ будут одинаковы</p>
+
+<h3 id="definition-2">ОДЗ 2</h3>
+<p>Мы можем думать о <code class="language-plaintext highlighter-rouge">h</code> как о входных данных для <code class="language-plaintext highlighter-rouge">p_smart</code>.
+Итак, наша цель на самом деле состоит в том, чтобы 
+<em>найти значение</em> для <code class="language-plaintext highlighter-rouge">h</code> такое, чтобы <em>для всех значений </em> <code class="language-plaintext highlighter-rouge">x</code>,
+<code class="language-plaintext highlighter-rouge">p_naive(x) == p_smart(x,h)</code>.</p>
+
+<h3 id="definition-3">ОД3 3</h3>
+<p>Теперь мы можем рассматривать программу, скажем, <code class="language-plaintext highlighter-rouge">p_naive</code>,
+как логическую связь<mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="3"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="7.796ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3445.9 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D45B" xlink:href="#MJX-TEX-I-1D45B"></use></g></g><g data-mml-node="mo" transform="translate(1161.3,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1550.3,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(2122.3,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(2566.9,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(3056.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>φ</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></math></mjx-assistive-mml></mjx-container>
+между её input и output переменными, <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="4"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math></mjx-assistive-mml></mjx-container> и <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="5"><svg style="vertical-align: -0.464ex;" xmlns="http://www.w3.org/2000/svg" width="1.109ex" height="1.464ex" role="img" focusable="false" viewBox="0 -442 490 647" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi></math></mjx-assistive-mml></mjx-container>.
+Идея заключается в том, что отношение истинно тогда и только тогда, когда <code class="language-plaintext highlighter-rouge">p_naive(x) == y</code>.</p>
+
+<p>Итак, наша цель действительно состоит в том, чтобы <em>найти значение</em> для <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="6"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.303ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 576 705" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>h</mi></math></mjx-assistive-mml></mjx-container> чтобы для <em>всех значений</em> <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="7"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math></mjx-assistive-mml></mjx-container> и <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="8"><svg style="vertical-align: -0.464ex;" xmlns="http://www.w3.org/2000/svg" width="1.109ex" height="1.464ex" role="img" focusable="false" viewBox="0 -442 490 647" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi></math></mjx-assistive-mml></mjx-container>, у нас было значение <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="9"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="24.411ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 10789.5 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D45B" xlink:href="#MJX-TEX-I-1D45B"></use></g></g><g data-mml-node="mo" transform="translate(1161.3,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1550.3,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(2122.3,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(2566.9,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(3056.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mstyle" transform="translate(3445.9,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mo" transform="translate(4001.7,0)"><use data-c="27FA" xlink:href="#MJX-TEX-N-27FA"></use></g><g data-mml-node="mstyle" transform="translate(5859.7,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(6415.5,0)"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g><g data-mml-node="mo" transform="translate(7484.1,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(7873.1,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(8445.1,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(8889.8,0)"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g><g data-mml-node="mo" transform="translate(9465.8,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(9910.5,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(10400.5,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>φ</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo><mstyle scriptlevel="0"><mspace width="0.278em"></mspace></mstyle><mo stretchy="false">⟺</mo><mstyle scriptlevel="0"><mspace width="0.278em"></mspace></mstyle><msub><mi>φ</mi><mi>s</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>h</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></math></mjx-assistive-mml></mjx-container> true.</p>
+
+<h3 id="final-definition">Последнее ОДЗ</h3>
+<p>Наконец, мы готовы логически сформулировать проблему. Найдите удовлетворяющие значения для следующей формулы <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="10"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="30.083ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 13296.8 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="2200" xlink:href="#MJX-TEX-N-2200"></use></g><g data-mml-node="mi" transform="translate(556,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(1128,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(1572.7,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(2062.7,0)"><use data-c="2E" xlink:href="#MJX-TEX-N-2E"></use></g><g data-mml-node="msub" transform="translate(2507.3,0)"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D45B" xlink:href="#MJX-TEX-I-1D45B"></use></g></g><g data-mml-node="mo" transform="translate(3668.6,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(4057.6,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(4629.6,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(5074.3,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(5564.3,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mstyle" transform="translate(5953.3,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mo" transform="translate(6509,0)"><use data-c="27FA" xlink:href="#MJX-TEX-N-27FA"></use></g><g data-mml-node="mstyle" transform="translate(8367,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(8922.8,0)"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g><g data-mml-node="mo" transform="translate(9991.5,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(10380.5,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(10952.5,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(11397.1,0)"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g><g data-mml-node="mo" transform="translate(11973.1,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(12417.8,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(12907.8,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">∀</mi><mi>x</mi><mo>,</mo><mi>y</mi><mo data-mjx-texclass="PUNCT">.</mo><msub><mi>φ</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo><mstyle scriptlevel="0"><mspace width="0.278em"></mspace></mstyle><mo stretchy="false">⟺</mo><mstyle scriptlevel="0"><mspace width="0.278em"></mspace></mstyle><msub><mi>φ</mi><mi>s</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>h</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></math></mjx-assistive-mml></mjx-container>Обратите внимание, что переменная <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="11"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.303ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 576 705" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>h</mi></math></mjx-assistive-mml></mjx-container> <em>свободна</em>. Следовательно, любое удовлетворяющее значение этой формулы только содержится в <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="12"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.303ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 576 705" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>h</mi></math></mjx-assistive-mml></mjx-container>.</p>
+
+<p>На данный момент мы полностью свели задачу синтеза к решению логической формулы. Мы можем сделать это с помощью SMT-решателя, такого как <a href="https://github.com/Z3Prover/z3">Z3</a> или bitwuzla(https://bitwuzla.github.io/).</p>
+
+<h2 id="a-detailed-example">Детальное рассмотрение примера выше</h2>
+
+<p>Теперь мы можем применить описанный выше процесс для кодирования <code class="language-plaintext highlighter-rouge">p_smart</code> и <code class="language-plaintext highlighter-rouge">p_naive</code> в виде формул.
+Мы закодируем их в теории битовых векторов first-order(первого порядка), которая содержит все стандартные операции, которые нас интересуют..</p>
+
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" display="true" style="position: relative;" tabindex="0" ctxtmenu_counter="13"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="19.501ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 8619.5 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D45B" xlink:href="#MJX-TEX-I-1D45B"></use></g></g><g data-mml-node="mo" transform="translate(1161.3,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1550.3,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(2122.3,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(2566.9,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(3056.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(3723.7,0)"><use data-c="2261" xlink:href="#MJX-TEX-N-2261"></use></g><g data-mml-node="mi" transform="translate(4779.5,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(5547.3,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mi" transform="translate(6603,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(7397.3,0)"><use data-c="2217" xlink:href="#MJX-TEX-N-2217"></use></g><g data-mml-node="mn" transform="translate(8119.5,0)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>φ</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>≡</mo><mi>y</mi><mo>=</mo><mi>x</mi><mo>∗</mo><mn>2</mn></math></mjx-assistive-mml></mjx-container>
+
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" display="true" style="position: relative;" tabindex="0" ctxtmenu_counter="14"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="24.413ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 10790.6 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g><g data-mml-node="mo" transform="translate(1068.6,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1457.6,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(2029.6,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(2474.3,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(2964.3,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(3409,0)"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g><g data-mml-node="mo" transform="translate(3985,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(4651.7,0)"><use data-c="2261" xlink:href="#MJX-TEX-N-2261"></use></g><g data-mml-node="mi" transform="translate(5707.5,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(6475.3,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mi" transform="translate(7531.1,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(8380.9,0)"><g data-mml-node="text"><use data-c="3C" xlink:href="#MJX-TEX-N-3C"></use></g><g data-mml-node="text" transform="translate(778,0)"><use data-c="3C" xlink:href="#MJX-TEX-N-3C"></use></g></g><g data-mml-node="mi" transform="translate(10214.6,0)"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>φ</mi><mi>s</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>h</mi><mo stretchy="false">)</mo><mo>≡</mo><mi>y</mi><mo>=</mo><mi>x</mi><mo>&lt;&lt;</mo><mi>h</mi></math></mjx-assistive-mml></mjx-container>
+
+<p>Теперь мы напишем их используя Z3 вместе с его Python API следующим образом:</p>
+
+<p>Сначала мы определяем все переменные как 8-битные векторы.</p>
+
+<p><em>Весь пример доступен тут: <a href="http://github.com/barghouthi/704examples/blob/master/synthesis/synth.py">GitHub</a></em></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">BitVec</span><span class="p">(</span><span class="s">'x'</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">BitVec</span><span class="p">(</span><span class="s">'y'</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">BitVec</span><span class="p">(</span><span class="s">'h'</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Затем мы обозначем <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="15"><svg style="vertical-align: -0.493ex;" xmlns="http://www.w3.org/2000/svg" width="2.627ex" height="1.493ex" role="img" focusable="false" viewBox="0 -442 1161.3 660" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D45B" xlink:href="#MJX-TEX-I-1D45B"></use></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>φ</mi><mi>n</mi></msub></math></mjx-assistive-mml></mjx-container> и <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="16"><svg style="vertical-align: -0.493ex;" xmlns="http://www.w3.org/2000/svg" width="2.418ex" height="1.493ex" role="img" focusable="false" viewBox="0 -442 1068.6 660" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>φ</mi><mi>s</mi></msub></math></mjx-assistive-mml></mjx-container>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">phi_n</span> <span class="o">=</span> <span class="n">y</span> <span class="o">==</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">phi_s</span> <span class="o">=</span> <span class="n">y</span> <span class="o">==</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="n">h</span>
+</code></pre></div></div>
+
+<p>Теперь мы готовы вызвать главную часть Z3: </p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># first, encode the universally quantified formula
+# (the == symbol is if and only if)
+</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">ForAll</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">phi_n</span> <span class="o">==</span> <span class="n">phi_s</span><span class="p">)</span>
+<span class="c1"># second, call Z3 and check if there is a model
+</span><span class="n">s</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">()</span>
+<span class="n">s</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+<span class="n">s</span><span class="p">.</span><span class="n">check</span><span class="p">()</span>
+<span class="c1"># print the model (i.e., the value of h)
+</span><span class="k">print</span> <span class="n">s</span><span class="p">.</span><span class="n">model</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Если ты "запустишь" этот код, то на выходе увидишь <code class="language-plaintext highlighter-rouge">[h = 1]</code> - как и ожидалось!</p>
+
+<h2 id="test-driven-synthesis">Синтез, основанный на тестировании(Test-driven synthesis)</h2>
+
+<p>Подход, представленный выше, работает над двумя программами: он пытается найти программу, <em>эквивалентную</em> некоторой эталонной реализации. Вместо того чтобы писать полноценную эталонную реализацию, мы сейчас просто напишем несколько тестовых примеров и найдем программу, которая пройдет все из них. Вы могли бы думать об этом как о тестовой разработке на стероидах!</p>
+
+<p>Допустим, мы хотим написать функцию, которая, учитывая битовый вектор <code class="language-plaintext highlighter-rouge">x</code>, возвращает битовый вектор <code class="language-plaintext highlighter-rouge">y</code>, равный 1 в позиции первого 0 справа, <code class="language-plaintext highlighter-rouge">x</code>, и 0 где-либо ещё.<sup id="fnref:fn-sketch" role="doc-noteref"><a href="#fn:fn-sketch" class="footnote" rel="footnote">2</a></sup></p>
+
+<p>Для примера, </p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># test 1
+</span><span class="n">x</span> <span class="o">=</span> <span class="mi">00000000</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">00000001</span>
+<span class="c1"># test 2
+</span><span class="n">x</span> <span class="o">=</span> <span class="mi">00000011</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">00000100</span>
+<span class="c1"># test 3
+</span><span class="n">x</span> <span class="o">=</span> <span class="mi">00000010</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">00000001</span>
+</code></pre></div></div>
+
+<p>Предположим, у вас есть следующая догадка о том, как эффективно написать такую программу: </p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="err">??</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="err">??</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Здесь <code class="language-plaintext highlighter-rouge">~</code> является битовым not и <code class="language-plaintext highlighter-rouge">&amp;</code> является битовым and.
+Наша цель - найти решения для двух неизвестных
+, которые приведут к желаемой программе.</p>
+
+<p>Как и прежде, мы пишем программу как логическое отношение:</p>
+
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" display="true" style="position: relative;" tabindex="0" ctxtmenu_counter="17"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="32.822ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 14507.5 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g><g data-mml-node="mo" transform="translate(1346.4,0)"><use data-c="2261" xlink:href="#MJX-TEX-N-2261"></use></g><g data-mml-node="mi" transform="translate(2402.2,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(3170,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mo" transform="translate(4225.7,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mo" transform="translate(4614.7,0)"><use data-c="223C" xlink:href="#MJX-TEX-N-223C"></use></g><g data-mml-node="mo" transform="translate(5670.5,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(6059.5,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(6853.7,0)"><use data-c="2B" xlink:href="#MJX-TEX-N-2B"></use></g><g data-mml-node="msub" transform="translate(7854,0)"><g data-mml-node="mi"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g><g data-mml-node="mn" transform="translate(609,-150) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g><g data-mml-node="mo" transform="translate(8866.5,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(9255.5,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mtext" transform="translate(9644.5,0)"><use data-c="A0" xlink:href="#MJX-TEX-N-A0"></use></g><g data-mml-node="mi" transform="translate(9894.5,0)"><use data-c="26" xlink:href="#MJX-TEX-N-26"></use></g><g data-mml-node="mtext" transform="translate(10672.5,0)"><use data-c="A0" xlink:href="#MJX-TEX-N-A0"></use></g><g data-mml-node="mo" transform="translate(10922.5,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(11311.5,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(12105.7,0)"><use data-c="2B" xlink:href="#MJX-TEX-N-2B"></use></g><g data-mml-node="msub" transform="translate(13106,0)"><g data-mml-node="mi"><use data-c="210E" xlink:href="#MJX-TEX-I-210E"></use></g><g data-mml-node="mn" transform="translate(609,-150) scale(0.707)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mo" transform="translate(14118.5,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>φ</mi><mi>s</mi></msub><mo>≡</mo><mi>y</mi><mo>=</mo><mo stretchy="false">(</mo><mo>∼</mo><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><msub><mi>h</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mtext>&nbsp;</mtext><mi mathvariant="normal">&amp;</mi><mtext>&nbsp;</mtext><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><msub><mi>h</mi><mn>2</mn></msub><mo stretchy="false">)</mo></math></mjx-assistive-mml></mjx-container>
+
+<p>Обратите внимание как мы написали две неизвестных - мы их написали как две переменные</p>
+
+<p>Аналогично, мы можем написать тестовые примеры(test cases) как отношение:</p>
+
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" display="true" style="position: relative;" tabindex="0" ctxtmenu_counter="18"><svg style="vertical-align: -0.493ex;" xmlns="http://www.w3.org/2000/svg" width="15.704ex" height="1.91ex" role="img" focusable="false" viewBox="0 -626 6941.4 844" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g></g><g data-mml-node="mo" transform="translate(1270,0)"><use data-c="2261" xlink:href="#MJX-TEX-N-2261"></use></g><g data-mml-node="msub" transform="translate(2325.8,0)"><g data-mml-node="mi"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g><g data-mml-node="mn" transform="translate(394,-150) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g><g data-mml-node="mo" transform="translate(3345.6,0)"><use data-c="2228" xlink:href="#MJX-TEX-N-2228"></use></g><g data-mml-node="msub" transform="translate(4234.8,0)"><g data-mml-node="mi"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g><g data-mml-node="mn" transform="translate(394,-150) scale(0.707)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mo" transform="translate(5254.6,0)"><use data-c="2228" xlink:href="#MJX-TEX-N-2228"></use></g><g data-mml-node="msub" transform="translate(6143.8,0)"><g data-mml-node="mi"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g><g data-mml-node="mn" transform="translate(394,-150) scale(0.707)"><use data-c="33" xlink:href="#MJX-TEX-N-33"></use></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>φ</mi><mi>t</mi></msub><mo>≡</mo><msub><mi>t</mi><mn>1</mn></msub><mo>∨</mo><msub><mi>t</mi><mn>2</mn></msub><mo>∨</mo><msub><mi>t</mi><mn>3</mn></msub></math></mjx-assistive-mml></mjx-container>
+
+<p>где</p>
+
+<mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" display="true" style="position: relative;" tabindex="0" ctxtmenu_counter="19"><svg style="vertical-align: -0.464ex;" xmlns="http://www.w3.org/2000/svg" width="54.106ex" height="1.995ex" role="img" focusable="false" viewBox="0 -677 23915 882" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g><g data-mml-node="mn" transform="translate(394,-150) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g><g data-mml-node="mo" transform="translate(1075.3,0)"><use data-c="2261" xlink:href="#MJX-TEX-N-2261"></use></g><g data-mml-node="mi" transform="translate(2131.1,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(2980.9,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(4036.7,0)"><use data-c="30" xlink:href="#MJX-TEX-N-30"></use></g><g data-mml-node="mo" transform="translate(4758.9,0)"><use data-c="2227" xlink:href="#MJX-TEX-N-2227"></use></g><g data-mml-node="mi" transform="translate(5648.1,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(6415.9,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(7471.7,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mspace" transform="translate(7971.7,0)"></g><g data-mml-node="msub" transform="translate(7971.7,0)"><g data-mml-node="mi"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g><g data-mml-node="mn" transform="translate(394,-150) scale(0.707)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mo" transform="translate(9047,0)"><use data-c="2261" xlink:href="#MJX-TEX-N-2261"></use></g><g data-mml-node="mi" transform="translate(10102.8,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(10952.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(12008.3,0)"><use data-c="33" xlink:href="#MJX-TEX-N-33"></use></g><g data-mml-node="mo" transform="translate(12730.6,0)"><use data-c="2227" xlink:href="#MJX-TEX-N-2227"></use></g><g data-mml-node="mi" transform="translate(13619.8,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(14387.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(15443.3,0)"><use data-c="34" xlink:href="#MJX-TEX-N-34"></use></g><g data-mml-node="mspace" transform="translate(15943.3,0)"></g><g data-mml-node="msub" transform="translate(15943.3,0)"><g data-mml-node="mi"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g><g data-mml-node="mn" transform="translate(394,-150) scale(0.707)"><use data-c="33" xlink:href="#MJX-TEX-N-33"></use></g></g><g data-mml-node="mo" transform="translate(17018.7,0)"><use data-c="2261" xlink:href="#MJX-TEX-N-2261"></use></g><g data-mml-node="mi" transform="translate(18074.4,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(18924.2,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(19980,0)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(20702.2,0)"><use data-c="2227" xlink:href="#MJX-TEX-N-2227"></use></g><g data-mml-node="mi" transform="translate(21591.4,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(22359.2,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(23415,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>t</mi><mn>1</mn></msub><mo>≡</mo><mi>x</mi><mo>=</mo><mn>0</mn><mo>∧</mo><mi>y</mi><mo>=</mo><mn>1</mn><mspace linebreak="newline"></mspace><msub><mi>t</mi><mn>2</mn></msub><mo>≡</mo><mi>x</mi><mo>=</mo><mn>3</mn><mo>∧</mo><mi>y</mi><mo>=</mo><mn>4</mn><mspace linebreak="newline"></mspace><msub><mi>t</mi><mn>3</mn></msub><mo>≡</mo><mi>x</mi><mo>=</mo><mn>2</mn><mo>∧</mo><mi>y</mi><mo>=</mo><mn>1</mn></math></mjx-assistive-mml></mjx-container>
+
+<p>Наконец, мы решаем следующую формулу: <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" style="position: relative;" tabindex="0" ctxtmenu_counter="20"><svg style="vertical-align: -0.493ex;" xmlns="http://www.w3.org/2000/svg" width="13.855ex" height="2.063ex" role="img" focusable="false" viewBox="0 -694 6123.8 912" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="2200" xlink:href="#MJX-TEX-N-2200"></use></g><g data-mml-node="mi" transform="translate(556,0)"><use data-c="1D465" xlink:href="#MJX-TEX-I-1D465"></use></g><g data-mml-node="mo" transform="translate(1128,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(1572.7,0)"><use data-c="1D466" xlink:href="#MJX-TEX-I-1D466"></use></g><g data-mml-node="mo" transform="translate(2062.7,0)"><use data-c="2E" xlink:href="#MJX-TEX-N-2E"></use></g><g data-mml-node="msub" transform="translate(2507.3,0)"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g></g><g data-mml-node="mo" transform="translate(3777.4,0)"><use data-c="21D2" xlink:href="#MJX-TEX-N-21D2"></use></g><g data-mml-node="msub" transform="translate(5055.2,0)"><g data-mml-node="mi"><use data-c="1D711" xlink:href="#MJX-TEX-I-1D711"></use></g><g data-mml-node="mi" transform="translate(687,-150) scale(0.707)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">∀</mi><mi>x</mi><mo>,</mo><mi>y</mi><mo data-mjx-texclass="PUNCT">.</mo><msub><mi>φ</mi><mi>t</mi></msub><mo stretchy="false">⇒</mo><msub><mi>φ</mi><mi>s</mi></msub></math></mjx-assistive-mml></mjx-container>Обратите внимание, что у нас есть импликация(https://ru.wikipedia.org/wiki/Импликация), а не эквивалентность между этими двумя отношениями. Интуитивно понятно, что отношение, определенное тестовыми примерами, невелико и не определяет поведение, отличное от 3-х предоставленных нами тестовых примеров. Итак, то, что мы ищем, - это <code class="language-plaintext highlighter-rouge">p_smart</code>, в которой все тестовые примеры отображаются в ее отношении (или являются подмножеством).</p>
+
+<p>Давайте напишем это используя Z3! Процесс будет аналогичен процессу выше</p>
+
+<p><em>Код для этого примера также доступен: <a href="http://github.com/barghouthi/704examples/blob/master/synthesis/synth_test.py">GitHub</a></em></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">phi_s</span> <span class="o">=</span> <span class="n">y</span> <span class="o">==</span> <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">h1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">h2</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">And</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">And</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">And</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">phi_t</span> <span class="o">=</span> <span class="n">Or</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">,</span><span class="n">t3</span><span class="p">)</span>
+
+<span class="n">encoding</span> <span class="o">=</span> <span class="n">ForAll</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">Implies</span><span class="p">(</span><span class="n">phi_t</span><span class="p">,</span> <span class="n">phi_s</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Решая формулу<code class="language-plaintext highlighter-rouge"></code> мы получаем следующий результат: <code class="language-plaintext highlighter-rouge">[h2 = 1, h1 = 0]</code>, что как раз в рузльтате использования значений выше позволяет получить корректный результат нашей p_smart</p>
+
+<p>Поскольку мы имеем дело с тестовыми примерами, предоставляемых нами тестовых примеров может оказаться недостаточно, чтобы заставить SMT-решатель найти нужную программу; в таком случае вы можете предоставить больше тестов. Например, если я просто дам Z3 3 тестовых примера(test cases), то я получу<code class="language-plaintext highlighter-rouge">[h2 = 15, h1 = 14]</code>, что является неправильным результатом (проверьте это).</p>
+
+<h2 id="conclusion">Подытожим</h2>
+<p>Мы рассмотрели комбинаторную форму синтеза программы, где мы определяем пространство поиска как программу с неизвестными. 
+Вы можете задаться вопросом, как релизовать ещё и control-flow нашей p_smart. В этом документе это отлично описывается:  <a href="http://www.csl.sri.com/users/tiwari/papers/pldi2011-bitvector.pdf">Synthesis of Loop-free Programs</a>.</p>
+
+<p>Идея поиска в пространстве программ недавно была исследована в более широком спектре. Оказывается, передача задачи SMT-решателю - не всегда правильный путь; иногда пользовательский алгоритм перечисления превосходит SMT-решатели. Однако SMT-решатели очень хороши в поиске <em>magic constants</em>, до которых простое перечисление, возможно, никогда не дойдет. Итак, в задачах с перебором битов лучше всего использовать symbolic execution.</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:fn-compiler" role="doc-endnote">
+      <p>“Но это то, что делает оптимизирующий компилятор!” вы протестуете. Да! Но здесь мы применяем <em>комбинаторный</em>
+ подход: компилятор применяет фиксированный набор приемов, чтобы получить эффективную программу; здесь мы вручную определим пространство программ и проведем в нем исчерпывающий поиск, пока не найдем нужную. В каком-то смысле мы проводим <em>superoptimization</em>.&nbsp;<a href="#fnref:fn-compiler" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:fn-sketch" role="doc-endnote">
+      <p>Пример заимствован из Sketch project и найден в заметках Loris D’Antoni’s.<a href="#fnref:fn-sketch" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+  </ol>
+</div>
+
+</article>
+
+
+      </main>
+
+    </div>
+  
+
+<svg style="display: none;" id="MJX-SVG-global-cache"><defs><path id="MJX-TEX-I-1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path><path id="MJX-TEX-N-3E" d="M84 520Q84 528 88 533T96 539L99 540Q106 540 253 471T544 334L687 265Q694 260 694 250T687 235Q685 233 395 96L107 -40H101Q83 -38 83 -20Q83 -19 83 -17Q82 -10 98 -1Q117 9 248 71Q326 108 378 132L626 250L378 368Q90 504 86 509Q84 513 84 520Z"></path><path id="MJX-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-TEX-N-21" d="M78 661Q78 682 96 699T138 716T180 700T199 661Q199 654 179 432T158 206Q156 198 139 198Q121 198 119 206Q118 209 98 431T78 661ZM79 61Q79 89 97 105T141 121Q164 119 181 104T198 61Q198 31 181 16T139 1Q114 1 97 16T79 61Z"></path><path id="MJX-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-TEX-N-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path><path id="MJX-TEX-I-1D711" d="M92 210Q92 176 106 149T142 108T185 85T220 72L235 70L237 71L250 112Q268 170 283 211T322 299T370 375T429 423T502 442Q547 442 582 410T618 302Q618 224 575 152T457 35T299 -10Q273 -10 273 -12L266 -48Q260 -83 252 -125T241 -179Q236 -203 215 -212Q204 -218 190 -218Q159 -215 159 -185Q159 -175 214 -2L209 0Q204 2 195 5T173 14T147 28T120 46T94 71T71 103T56 142T50 190Q50 238 76 311T149 431H162Q183 431 183 423Q183 417 175 409Q134 361 114 300T92 210ZM574 278Q574 320 550 344T486 369Q437 369 394 329T323 218Q309 184 295 109L286 64Q304 62 306 62Q423 62 498 131T574 278Z"></path><path id="MJX-TEX-N-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path id="MJX-TEX-I-1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path><path id="MJX-TEX-N-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path><path id="MJX-TEX-I-1D466" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path id="MJX-TEX-N-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path><path id="MJX-TEX-I-210E" d="M137 683Q138 683 209 688T282 694Q294 694 294 685Q294 674 258 534Q220 386 220 383Q220 381 227 388Q288 442 357 442Q411 442 444 415T478 336Q478 285 440 178T402 50Q403 36 407 31T422 26Q450 26 474 56T513 138Q516 149 519 151T535 153Q555 153 555 145Q555 144 551 130Q535 71 500 33Q466 -10 419 -10H414Q367 -10 346 17T325 74Q325 90 361 192T398 345Q398 404 354 404H349Q266 404 205 306L198 293L164 158Q132 28 127 16Q114 -11 83 -11Q69 -11 59 -2T48 16Q48 30 121 320L195 616Q195 629 188 632T149 637H128Q122 643 122 645T124 664Q129 683 137 683Z"></path><path id="MJX-TEX-N-27FA" d="M1438 514Q1438 525 1454 525Q1459 525 1462 525T1467 525T1471 524T1473 523T1475 520T1477 517T1480 512Q1517 438 1578 381T1689 300T1785 263Q1802 258 1802 250T1793 239T1756 228T1698 204Q1554 134 1480 -12Q1476 -21 1473 -22T1458 -24Q1438 -24 1438 -17Q1438 -13 1443 0Q1478 69 1529 123L1539 133H318L328 123Q379 69 414 0Q419 -13 419 -17Q419 -24 399 -24Q388 -24 385 -23T377 -12Q332 77 253 144T72 237Q62 240 59 242T56 250T59 257T70 262T89 268T119 278T160 296Q303 366 377 512Q382 522 385 523T401 525Q419 524 419 515Q419 510 414 500Q379 431 328 377L318 367H1539L1529 377Q1496 412 1467 458T1438 514ZM274 173H1583L1593 181Q1632 211 1710 250Q1709 251 1692 259T1647 283T1593 319L1583 327H930L927 328L602 327H274L264 319Q225 289 147 250Q148 249 165 241T210 217T264 181L274 173Z"></path><path id="MJX-TEX-I-1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path><path id="MJX-TEX-N-2200" d="M0 673Q0 684 7 689T20 694Q32 694 38 680T82 567L126 451H430L473 566Q483 593 494 622T512 668T519 685Q524 694 538 694Q556 692 556 674Q556 670 426 329T293 -15Q288 -22 278 -22T263 -15Q260 -11 131 328T0 673ZM414 410Q414 411 278 411T142 410L278 55L414 410Z"></path><path id="MJX-TEX-N-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path><path id="MJX-TEX-N-2261" d="M56 444Q56 457 70 464H707Q722 456 722 444Q722 430 706 424H72Q56 429 56 444ZM56 237T56 250T70 270H707Q722 262 722 250T707 230H70Q56 237 56 250ZM56 56Q56 71 72 76H706Q722 70 722 56Q722 44 707 36H70Q56 43 56 56Z"></path><path id="MJX-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-TEX-N-2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path><path id="MJX-TEX-N-3C" d="M694 -11T694 -19T688 -33T678 -40Q671 -40 524 29T234 166L90 235Q83 240 83 250Q83 261 91 266Q664 540 678 540Q681 540 687 534T694 519T687 505Q686 504 417 376L151 250L417 124Q686 -4 687 -5Q694 -11 694 -19Z"></path><path id="MJX-TEX-N-223C" d="M55 166Q55 241 101 304T222 367Q260 367 296 349T362 304T421 252T484 208T554 189Q616 189 655 236T694 338Q694 350 698 358T708 367Q722 367 722 334Q722 260 677 197T562 134H554Q517 134 481 152T414 196T355 248T292 293T223 311Q179 311 145 286Q109 257 96 218T80 156T69 133Q55 133 55 166Z"></path><path id="MJX-TEX-N-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path><path id="MJX-TEX-N-A0" d=""></path><path id="MJX-TEX-N-26" d="M156 540Q156 620 201 668T302 716Q354 716 377 671T401 578Q401 505 287 386L274 373Q309 285 416 148L429 132L437 142Q474 191 543 309L562 341V349Q562 368 541 376T498 385H493V431H502L626 428Q709 428 721 431H727V385H712Q688 384 669 379T639 369T618 354T603 337T591 316T578 295Q537 223 506 176T464 117T454 104Q454 102 471 85T497 62Q543 24 585 24Q618 24 648 48T682 113V121H722V112Q721 94 714 75T692 32T646 -7T574 -22Q491 -19 414 42L402 51L391 42Q312 -22 224 -22Q144 -22 93 25T42 135Q42 153 46 169T55 197T74 225T96 249T125 278T156 308L195 347L190 360Q185 372 182 382T174 411T165 448T159 491T156 540ZM361 576Q361 613 348 646T305 679Q272 679 252 649T232 572Q232 497 255 426L259 411L267 420Q361 519 361 576ZM140 164Q140 103 167 64T240 24Q271 24 304 36T356 61T374 77Q295 156 235 262L220 292L210 310L193 293Q177 277 169 268T151 229T140 164Z"></path><path id="MJX-TEX-I-1D461" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path><path id="MJX-TEX-N-2228" d="M55 580Q56 587 61 592T75 598Q86 598 96 580L333 48L570 580Q579 596 586 597Q588 598 591 598Q609 598 611 580Q611 574 546 426T415 132T348 -15Q343 -22 333 -22T318 -15Q317 -14 252 131T121 425T55 580Z"></path><path id="MJX-TEX-N-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path id="MJX-TEX-N-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path><path id="MJX-TEX-N-2227" d="M318 591Q325 598 333 598Q344 598 348 591Q349 590 414 445T545 151T611 -4Q609 -22 591 -22Q588 -22 586 -21T581 -20T577 -17T575 -13T572 -9T570 -4L333 528L96 -4Q87 -20 80 -21Q78 -22 75 -22Q57 -22 55 -4Q55 2 120 150T251 444T318 591Z"></path><path id="MJX-TEX-N-34" d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z"></path><path id="MJX-TEX-N-21D2" d="M580 514Q580 525 596 525Q601 525 604 525T609 525T613 524T615 523T617 520T619 517T622 512Q659 438 720 381T831 300T927 263Q944 258 944 250T935 239T898 228T840 204Q696 134 622 -12Q618 -21 615 -22T600 -24Q580 -24 580 -17Q580 -13 585 0Q620 69 671 123L681 133H70Q56 140 56 153Q56 168 72 173H725L735 181Q774 211 852 250Q851 251 834 259T789 283T735 319L725 327H72Q56 332 56 347Q56 360 70 367H681L671 377Q638 412 609 458T580 514Z"></path></defs></svg></body></html>
